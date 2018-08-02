@@ -20,7 +20,10 @@ pipeline {
         stage('Push Registry') {
             steps {
                 sh 'docker tag javi1/app:test javi1/app:stable'
+                withCredentials([usernamePassword(credentialsId: 'Docker-Hub', passwordVariable: 'Docker-HubPassword', usernameVariable: 'Docker-HubUser')]) {
+          sh 'docker login -u ${env.Docker-HubUser} -p ${env.Docker-HubPassword}'
                 sh 'docker push javi1/app:stable'
+                }  
             }
         }
     }
